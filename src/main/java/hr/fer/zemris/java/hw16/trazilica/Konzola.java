@@ -4,13 +4,14 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
-
-import javax.naming.spi.DirStateFactory.Result;
 
 import hr.fer.zemris.java.hw16.trazilica.makers.DocumentMaker;
 import hr.fer.zemris.java.hw16.trazilica.makers.VocabularyMaker;
@@ -18,6 +19,13 @@ import hr.fer.zemris.java.hw16.trazilica.util.Record;
 import hr.fer.zemris.java.hw16.trazilica.util.Util;
 import hr.fer.zemris.java.hw16.trazilica.util.Vector3;
 
+/**
+ * Class implements console user interface for communicating with user and
+ * showing results of document comparing
+ * 
+ * @author Mihael
+ *
+ */
 public class Konzola {
 
 	/**
@@ -35,14 +43,26 @@ public class Konzola {
 	 */
 	private static List<Record> results;
 
+	/**
+	 * Map stores path to file with file's <code>tfidf</code>
+	 */
 	private static Map<Path, Vector3> documents;
 
+	/**
+	 * IDF vector for documents
+	 */
 	private static Vector3 idfVector;
 
 	/**
 	 * Path to file where data with dictionary is stored
 	 */
 	private static final String DICTIONARY_FILE = "src/main/resources/hrvatski_stoprijeci.txt";
+
+	/**
+	 * Constant which represents how small similarity must be to be treated like
+	 * zero
+	 */
+	private static final Double CONSTANT = Math.pow(10, -6);
 
 	/**
 	 * Main program
@@ -60,6 +80,7 @@ public class Konzola {
 			initialize(Paths.get(args[0]));
 			process();
 		} catch (Exception e) {
+			e.printStackTrace();
 			System.exit(1);
 		}
 	}
@@ -75,7 +96,16 @@ public class Konzola {
 	 * 
 	 */
 	private static void initialize(Path path) throws IOException {
-		stopWords = Files.readAllLines(Paths.get(DICTIONARY_FILE));
+		List<String> list = Files.readAllLines(Paths.get(DICTIONARY_FILE));
+		stopWords = new ArrayList<>();
+
+		for (String string : list) {
+			string = string.toUpperCase().trim();
+			if (!stopWords.contains(string)) {
+				stopWords.add(string);
+			}
+		}
+
 		documents = new LinkedHashMap<>();
 		prepareDocuments(path);
 	}
@@ -93,6 +123,14 @@ public class Konzola {
 		createsDocuments(path);
 	}
 
+	/**
+	 * Method passes through all documents and creates their vectors
+	 * 
+	 * @param path
+	 *            - path to file
+	 * @throws IOException
+	 *             - if exception during passing appears
+	 */
 	private static void createsDocuments(Path path) throws IOException {
 		DocumentMaker maker = new DocumentMaker(path, dictionary);
 
@@ -167,13 +205,13 @@ public class Konzola {
 				int value = Integer.parseInt(command.trim());
 				Record result = results.get(value);
 
-				List<String> list = Util.readLines(result.getPath());
+				String list = Util.readFile(result.getPath());
 
 				System.out.println("Document: " + result.getPath());
 				System.out.println("------------------------------");
 				System.out.println(result.getPath().getFileName().toString());
 				System.out.println();
-				list.forEach(e -> System.out.print(e));
+				System.out.println(list);
 				System.out.println("\n");
 				System.out.println("------------------------------");
 
@@ -188,9 +226,14 @@ public class Konzola {
 	 */
 	private static void printResults() {
 		if (results != null) {
-			for (int i = 0, lenght = results.size(); i < lenght; i++) {
+			for (int i = 0, lenght = 10; i < lenght; i++) {
 				Record record = results.get(i);
-				System.out.println("[" + (i + 1) + "] (" + record.getValue() + ") " + record.getPath());
+
+				if (Double.compare(record.getValue(), CONSTANT) < 0)
+					break;
+
+				System.out
+						.println("[" + i + "] (" + String.format("%.4f", record.getValue()) + ") " + record.getPath());
 			}
 		} else {
 			System.out.println("Before results showing,you must execute 'query' command");
@@ -206,8 +249,58 @@ public class Konzola {
 	private static void queryExecute(String command) {
 		command = command.substring(5);
 
-		List<String> list = Arrays.asList(command.split(" "));
-		list.retainAll(dictionary);
+		List<String> pomList = Arrays.asList(command.split(" "));
+
+		System.out.print("Query is: [");
+		StringBuilder builder = new StringBuilder();
+		List<String> list = new ArrayList<>();
+
+		for (String str : pomList) {
+			str = str.toUpperCase().trim();
+			if (!dictionary.contains(str))
+				continue;
+
+			list.add(str);
+			builder.append(", " + str);
+		}
+
+		System.out.print(builder.toString().substring(2));
+
+		System.out.println("]");
+		double[] array = new double[dictionary.size()];
+
+		for (String string : list) {
+			array[dictionary.indexOf(string.toUpperCase().trim())]++;
+		}
+
+		Vector3 vector = Vector3.multiply(array, idfVector.toArray());
+
+		calculate(vector);
+	}
+
+	/**
+	 * Method calculates similarity between all documents and document made by given
+	 * query. After that,results list is sorted by similarity
+	 * 
+	 * @param vector
+	 *            - vector made by given query
+	 */
+	private static void calculate(Vector3 vector) {
+		results = new ArrayList<>();
+
+		for (Map.Entry<Path, Vector3> map : documents.entrySet()) {
+			results.add(new Record(map.getKey(), vector.cosAngle(map.getValue())));
+		}
+
+		Collections.sort(results, new Comparator<Record>() {
+
+			@Override
+			public int compare(Record first, Record second) {
+				return Double.compare(second.getValue(), first.getValue());
+			}
+		});
+
+		printResults();
 	}
 
 	/**

@@ -57,9 +57,12 @@ public class DocumentMaker extends SimpleFileVisitor<Path> {
 		List<String> document = Util.readLines(path);
 
 		for (String string : document) {
-			int index = dictionary.indexOf(string);
+			string = string.toUpperCase().trim();
+			if (dictionary.contains(string)) {
+				int index = dictionary.indexOf(string);
 
-			frequency[index]++;
+				frequency[index]++;
+			}
 		}
 
 		results.put(path, new Vector3(frequency)); // tf vector
@@ -129,6 +132,11 @@ public class DocumentMaker extends SimpleFileVisitor<Path> {
 		return number;
 	}
 
+	/**
+	 * Method returns creates IDF vector
+	 * 
+	 * @return IDF vector
+	 */
 	public Vector3 getIDF() {
 		return idf;
 	}

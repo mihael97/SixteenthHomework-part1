@@ -14,6 +14,9 @@ public class Record {
 	 */
 	private Path path;
 
+	/**
+	 * Similarity between two document's vectors
+	 */
 	private double value;
 
 	/**

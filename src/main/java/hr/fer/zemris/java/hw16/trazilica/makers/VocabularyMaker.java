@@ -61,6 +61,7 @@ public class VocabularyMaker extends SimpleFileVisitor<Path> {
 	@Override
 	public FileVisitResult visitFile(Path arg0, BasicFileAttributes arg1) throws IOException {
 		for (String string : Util.readLines(arg0)) {
+			string = string.toUpperCase().trim();
 			if (string.length() != 0 && !stopWords.contains(string)) {
 				vocabulary.add(string);
 			}

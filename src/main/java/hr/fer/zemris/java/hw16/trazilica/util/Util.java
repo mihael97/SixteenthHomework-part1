@@ -25,8 +25,20 @@ public abstract class Util {
 	 *             - if exception during reading appears
 	 */
 	public static List<String> readLines(Path path) throws IOException {
-		String document = new String(Files.readAllBytes(path), StandardCharsets.UTF_8);
-		document.replaceAll("[^A-Za-zČĆĐŠŽčćđšž]", " ").trim();
+		String document = readFile(path).trim().replaceAll(" +", " ").toUpperCase();
 		return Arrays.asList(document.split(" "));
+	}
+
+	/**
+	 * Method reads file from disc
+	 * 
+	 * @param path
+	 *            - path to file
+	 * @return file's context
+	 * @throws IOException
+	 *             - if exception during reading appears
+	 */
+	public static String readFile(Path path) throws IOException {
+		return new String(Files.readAllBytes(path), StandardCharsets.UTF_8).replaceAll("\\P{L}+", " ");
 	}
 }

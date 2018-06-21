@@ -4,14 +4,17 @@ import java.util.Objects;
 import static java.lang.Math.pow;
 
 /**
- * Razred koji implemenira model vektora u 3D sustavu sa koeficijentima x,z,i y.
- * Također sadrži neke osnovne metode za rad sa vektorima
+ * Class represents implementation of polynomial vector with mathematics
+ * operations
  * 
  * @author Mihael
  *
  */
 public class Vector3 {
 
+	/**
+	 * Coefficients
+	 */
 	private double[] coordinates;
 
 	/**
@@ -36,18 +39,18 @@ public class Vector3 {
 			sum += pow(number, 2);
 		}
 
-		return sum;
+		return Math.sqrt(sum);
 	}
 
 	/**
-	 * Metpda koja skalrano(sam sa sobom) množi vektor
+	 * Method calculates dot product of this vector and argument
 	 * 
 	 * @param other
-	 *            - drugi kompleksni broj
-	 * @return skalarni oblik proizvodnje
+	 *            - second vector
+	 * @return double value of dot product between two vectors
 	 * 
 	 * @throws NullPointerException
-	 *             - ako je argument <code>null</code>
+	 *             - if argument is null
 	 */
 	public double dot(Vector3 other) {
 		Objects.requireNonNull(other);
@@ -62,25 +65,34 @@ public class Vector3 {
 	}
 
 	/**
-	 * Metoda vraća kosinus kuta između trenutnog vektora i argumenta
-	 * 
+	 * Returns the cosine of the angle between this vector and the specified vector.
+	 *
 	 * @param other
-	 *            - atgument
-	 * @return kosinus kuta
+	 *            the vector
+	 * @return double cosine value
 	 */
 	public double cosAngle(Vector3 other) {
-		return dot(other) / (norm() * other.norm());
+		return Math.cos(Math.acos(this.dot(other) / (this.norm() * other.norm())));
 	}
 
 	/**
-	 * Metoda stvara novo polje sa koeficijentima
+	 * Method returns coefficients of vector
 	 * 
-	 * @return novo polje koeficijenata
+	 * @return coefficients
 	 */
 	public double[] toArray() {
 		return coordinates;
 	}
 
+	/**
+	 * Static method multiplies two vector
+	 * 
+	 * @param vector1
+	 *            - first vector coefficients
+	 * @param vector2
+	 *            - second vector coefficients
+	 * @return new Vector which is made like multiply result of given vectors
+	 */
 	public static Vector3 multiply(double[] vector1, double[] vector2) {
 		if (vector1.length != vector2.length) {
 			throw new IllegalArgumentException("Vectors must have same numebr of coeffcients,but one has "
