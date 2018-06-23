@@ -25,7 +25,8 @@ public abstract class Util {
 	 *             - if exception during reading appears
 	 */
 	public static List<String> readLines(Path path) throws IOException {
-		String document = readFile(path).trim().replaceAll(" +", " ").toUpperCase();
+		String document = readFile(path).trim().toUpperCase();
+
 		return Arrays.asList(document.split(" "));
 	}
 
