@@ -9,9 +9,11 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
 
 import hr.fer.zemris.java.hw16.trazilica.makers.DocumentMaker;
 import hr.fer.zemris.java.hw16.trazilica.makers.VocabularyMaker;
@@ -36,7 +38,7 @@ public class Konzola {
 	/**
 	 * List contains all <code>stopping</code> words in language
 	 */
-	private static List<String> stopWords;
+	private static Set<String> stopWords;
 
 	/**
 	 * List contains results of last <code>query</code> command
@@ -97,13 +99,11 @@ public class Konzola {
 	 */
 	private static void initialize(Path path) throws IOException {
 		List<String> list = Files.readAllLines(Paths.get(DICTIONARY_FILE));
-		stopWords = new ArrayList<>();
+		stopWords = new LinkedHashSet<>();
 
 		for (String string : list) {
 			string = string.toUpperCase().trim();
-			if (!stopWords.contains(string)) {
-				stopWords.add(string);
-			}
+			stopWords.add(string);
 		}
 
 		documents = new LinkedHashMap<>();

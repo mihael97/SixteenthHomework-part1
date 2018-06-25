@@ -30,7 +30,7 @@ public class VocabularyMaker extends SimpleFileVisitor<Path> {
 	/**
 	 * List contains all stop words in language
 	 */
-	private List<String> stopWords;
+	private Set<String> stopWords;
 
 	/**
 	 * Constructor initializes new folder walker which finds all words
@@ -43,7 +43,7 @@ public class VocabularyMaker extends SimpleFileVisitor<Path> {
 	 * @throws NullPointerException
 	 *             - if list argument or path are null
 	 */
-	public VocabularyMaker(Path path, List<String> stopWords) {
+	public VocabularyMaker(Path path, Set<String> stopWords) {
 		Objects.requireNonNull(path, "Path to folder cannot be null!");
 		if (!Files.isDirectory(path)) {
 			throw new IllegalArgumentException("Given path must be folder!");
