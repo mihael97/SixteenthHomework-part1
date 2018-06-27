@@ -36,19 +36,25 @@ public class DocumentMaker extends SimpleFileVisitor<Path> {
 
 	/**
 	 * Constructor initializes new document visitor
-	 * 
-	 * @param path
-	 *            - path to folder
 	 * @param dictionary
 	 *            - list of all words
 	 */
-	public DocumentMaker(Path path, List<String> dictionary) {
+	public DocumentMaker(List<String> dictionary) {
 		this.dictionary = Objects.requireNonNull(dictionary);
 		this.results = new LinkedHashMap<>();
 	}
 
 	/**
-	 * Method goes through all files and records number of appearances on any word
+	 * Method goes through all files and records number of appearances of word
+	 * 
+	 * @param path
+	 *            - path to file
+	 * @param arg1
+	 *            - file attributes
+	 * 
+	 * @return {@link FileVisitResult},always {@link FileVisitResult#CONTINUE}
+	 * @throws IOException
+	 *             - exception during file reading
 	 */
 	@Override
 	public FileVisitResult visitFile(Path path, BasicFileAttributes arg1) throws IOException {
@@ -133,7 +139,7 @@ public class DocumentMaker extends SimpleFileVisitor<Path> {
 	}
 
 	/**
-	 * Method returns creates IDF vector
+	 * Method returns created IDF vector
 	 * 
 	 * @return IDF vector
 	 */

@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Class contains methods for global using in program
+ * Class contains methods for reading from file
  * 
  * @author Mihael
  *
@@ -25,7 +25,7 @@ public abstract class Util {
 	 *             - if exception during reading appears
 	 */
 	public static List<String> readLines(Path path) throws IOException {
-		String document = readFile(path).trim().toUpperCase();
+		String document = readFile(path).replaceAll("\\P{L}+", " ").trim().toUpperCase();
 
 		return Arrays.asList(document.split(" "));
 	}
@@ -40,6 +40,6 @@ public abstract class Util {
 	 *             - if exception during reading appears
 	 */
 	public static String readFile(Path path) throws IOException {
-		return new String(Files.readAllBytes(path), StandardCharsets.UTF_8).replaceAll("\\P{L}+", " ");
+		return new String(Files.readAllBytes(path), StandardCharsets.UTF_8);
 	}
 }

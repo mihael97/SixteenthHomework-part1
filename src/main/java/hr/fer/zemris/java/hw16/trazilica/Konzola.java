@@ -132,7 +132,7 @@ public class Konzola {
 	 *             - if exception during passing appears
 	 */
 	private static void createsDocuments(Path path) throws IOException {
-		DocumentMaker maker = new DocumentMaker(path, dictionary);
+		DocumentMaker maker = new DocumentMaker(dictionary);
 
 		Files.walkFileTree(path, maker);
 
@@ -209,7 +209,6 @@ public class Konzola {
 
 				System.out.println("Document: " + result.getPath());
 				System.out.println("------------------------------");
-				System.out.println(result.getPath().getFileName().toString());
 				System.out.println();
 				System.out.println(list);
 				System.out.println("\n");

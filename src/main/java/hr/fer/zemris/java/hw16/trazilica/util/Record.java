@@ -15,7 +15,7 @@ public class Record {
 	private Path path;
 
 	/**
-	 * Similarity between two document's vectors
+	 * Similarity between two vectors
 	 */
 	private double value;
 
@@ -25,7 +25,7 @@ public class Record {
 	 * @param path
 	 *            - path to file
 	 * @param value
-	 *            - file's value
+	 *            - file's similarity
 	 */
 	public Record(Path path, double value) {
 		super();

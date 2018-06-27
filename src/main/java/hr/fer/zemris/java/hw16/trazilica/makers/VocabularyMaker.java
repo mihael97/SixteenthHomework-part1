@@ -53,10 +53,14 @@ public class VocabularyMaker extends SimpleFileVisitor<Path> {
 	}
 
 	/**
-	 * Method passes trough every file in folder and collects all words
+	 * Method passes through every file in folder and collects all words
 	 * 
 	 * @param arg0
 	 *            - path to file
+	 * @param arg1
+	 *            - file attribute
+	 * 
+	 * @return {@link FileVisitResult#CONTINUE}
 	 */
 	@Override
 	public FileVisitResult visitFile(Path arg0, BasicFileAttributes arg1) throws IOException {
@@ -71,7 +75,7 @@ public class VocabularyMaker extends SimpleFileVisitor<Path> {
 	}
 
 	/**
-	 * Method returns list of founded words
+	 * Method returns list of found words
 	 * 
 	 * @return list of founded words
 	 */

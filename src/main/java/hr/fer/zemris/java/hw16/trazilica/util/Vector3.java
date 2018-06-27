@@ -23,14 +23,16 @@ public class Vector3 {
 	 * @param coordinates
 	 *            - coordinates
 	 */
-	public Vector3(double... coordinates) {
+	public Vector3(double[] coordinates) {
 		this.coordinates = coordinates;
 	}
 
 	/**
-	 * Method returns vector module
+	 * Method returns vector modulus<br>
+	 * Vector modulus is calculated like <code>root</code> of sum
+	 * of<code> square coefficients</code>
 	 * 
-	 * @return vector module
+	 * @return vector modulus
 	 */
 	public double norm() {
 		double sum = 0;
@@ -43,7 +45,7 @@ public class Vector3 {
 	}
 
 	/**
-	 * Method calculates dot product of this vector and argument
+	 * Method calculates dot product vector and vector argument
 	 * 
 	 * @param other
 	 *            - second vector
@@ -65,10 +67,10 @@ public class Vector3 {
 	}
 
 	/**
-	 * Returns the cosine of the angle between this vector and the specified vector.
+	 * Returns the cosine of the angle between vector and argument vector.
 	 *
 	 * @param other
-	 *            the vector
+	 *            - other vector
 	 * @return double cosine value
 	 */
 	public double cosAngle(Vector3 other) {
@@ -85,7 +87,9 @@ public class Vector3 {
 	}
 
 	/**
-	 * Static method multiplies two vector
+	 * Static method multiplies two vector<br>
+	 * The result vector coefficients are result of multiplication of argument
+	 * vectors coefficients at same position
 	 * 
 	 * @param vector1
 	 *            - first vector coefficients
