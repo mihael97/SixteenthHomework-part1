@@ -29,6 +29,7 @@ public class DocumentMaker extends SimpleFileVisitor<Path> {
 	 * Map which contains final results
 	 */
 	private Map<Path, Vector3> results;
+
 	/**
 	 * IDF vector
 	 */
@@ -36,6 +37,7 @@ public class DocumentMaker extends SimpleFileVisitor<Path> {
 
 	/**
 	 * Constructor initializes new document visitor
+	 * 
 	 * @param dictionary
 	 *            - list of all words
 	 */

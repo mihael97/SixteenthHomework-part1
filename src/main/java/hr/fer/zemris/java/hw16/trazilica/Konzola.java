@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
-
 import hr.fer.zemris.java.hw16.trazilica.makers.DocumentMaker;
 import hr.fer.zemris.java.hw16.trazilica.makers.VocabularyMaker;
 import hr.fer.zemris.java.hw16.trazilica.util.Record;
@@ -46,7 +45,7 @@ public class Konzola {
 	private static List<Record> results;
 
 	/**
-	 * Map stores path to file with file's <code>tfidf</code>
+	 * Map stores path to file with file's <code>tfidf</code> vector
 	 */
 	private static Map<Path, Vector3> documents;
 
@@ -206,7 +205,7 @@ public class Konzola {
 				Record result = results.get(value);
 
 				String list = Util.readFile(result.getPath());
-
+				System.out.println("------------------------------");
 				System.out.println("Document: " + result.getPath());
 				System.out.println("------------------------------");
 				System.out.println();
@@ -255,11 +254,11 @@ public class Konzola {
 		List<String> list = new ArrayList<>();
 
 		for (String str : pomList) {
-			str = str.toUpperCase().trim();
-			if (!dictionary.contains(str))
+			String pomStr = str.toUpperCase().trim();
+			if (!dictionary.contains(pomStr))
 				continue;
 
-			list.add(str);
+			list.add(pomStr);
 			builder.append(", " + str);
 		}
 
