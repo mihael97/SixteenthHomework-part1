@@ -81,7 +81,7 @@ public class Konzola {
 			initialize(Paths.get(args[0]));
 			process();
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.err.println(e.getMessage());
 			System.exit(1);
 		}
 	}
