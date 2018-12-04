@@ -35,9 +35,9 @@ public class Konzola {
 	private static List<String> dictionary;
 
 	/**
-	 * List contains all <code>stopping</code> words in language
+	 * List contains all <code>terminating</code> words in language
 	 */
-	private static Set<String> stopWords;
+	private static Set<String> terminatingWords;
 
 	/**
 	 * List contains results of last <code>query</code> command
@@ -98,11 +98,11 @@ public class Konzola {
 	 */
 	private static void initialize(Path path) throws IOException {
 		List<String> list = Files.readAllLines(Paths.get(DICTIONARY_FILE));
-		stopWords = new LinkedHashSet<>();
+		terminatingWords = new LinkedHashSet<>();
 
 		for (String string : list) {
 			string = string.toUpperCase().trim();
-			stopWords.add(string);
+			terminatingWords.add(string);
 		}
 
 		documents = new LinkedHashMap<>();
@@ -148,7 +148,7 @@ public class Konzola {
 	 *             - if exception during walking appears
 	 */
 	private static void getVocabulary(Path path) throws IOException {
-		VocabularyMaker maker = new VocabularyMaker(path, stopWords);
+		VocabularyMaker maker = new VocabularyMaker(path, terminatingWords );
 
 		Files.walkFileTree(path, maker);
 
